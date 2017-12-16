@@ -1,10 +1,5 @@
 import React, { Component } from 'react';
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Camera from 'react-native-camera';
 
 const styles = StyleSheet.create({
@@ -27,7 +22,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Home extends Component<{}> {
+export default class Scanner extends Component {
   onBarCodeRead = (e) => {
     console.log(
       'Barcode Found!',

@@ -1,13 +1,13 @@
+import React, { Component } from 'react';
 import { AppRegistry } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import HomeScreen from './Home';
+import Stack from './scenes/Stack';
 
-const RootNavigator = StackNavigator({
-  Home: {
-    screen: HomeScreen,
-  },
-});
+export default class App extends Component {
+  render() {
+    return (
+      <Stack />
+    );
+  }
+}
 
-export default RootNavigator;
-
-AppRegistry.registerComponent('App', () => RootNavigator);
+AppRegistry.registerComponent('App', () => App);
