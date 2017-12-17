@@ -2,15 +2,23 @@ import React, { Component } from 'react';
 import { StackNavigator } from 'react-navigation';
 import PropTypes from 'prop-types';
 
-import Home from './Home';
+import Tab from './Tab';
 import Scanner from './Scanner';
 
+const returnScanner = ({ navigation }) => (
+  <Scanner navigation={navigation} registerBarcode={navigation.state.params.registerBarcode} />
+);
+
+returnScanner.propTypes = {
+  navigation: PropTypes.object.isRequired,
+}
+
 const RootNavigator = StackNavigator({
-  Home: {
-    screen: Home,
+  Tab: {
+    screen: Tab,
   },
   Scanner: {
-    screen: Scanner,
+    screen: returnScanner,
   },
 });
 

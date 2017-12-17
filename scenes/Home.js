@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Alert } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 
@@ -28,9 +28,19 @@ export default class Home extends Component {
     stack: PropTypes.object.isRequired,
   }
 
+  registerBarcode = (e) => {
+    Alert.alert(
+      'Barcode Found!',
+      `Type: ${e.type}\nData: ${e.data}`,
+    );
+  }
+
   showCamera = () => {
     this.context.stack.app.dispatch(NavigationActions.navigate({
       routeName: 'Scanner',
+      params: {
+        registerBarcode: this.registerBarcode,
+      },
     }));
   }
 

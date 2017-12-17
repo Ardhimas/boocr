@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Camera from 'react-native-camera';
+import { NavigationActions } from 'react-navigation';
+import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   container: {
@@ -23,11 +25,29 @@ const styles = StyleSheet.create({
 });
 
 export default class Scanner extends Component {
-  onBarCodeRead = (e) => {
-    console.log(
-      'Barcode Found!',
-      // "Type: " + e.type + "\nData: " + e.data
-    );
+  static contextTypes = {
+    stack: PropTypes.object.isRequired,
+  }
+
+  static propTypes = {
+    navigation: PropTypes.object.isRequired,
+    registerBarcode: PropTypes.func.isRequired,
+  }
+
+  state = {
+    hasRead: false,
+  }
+
+  onBarCodeRead = async (e) => {
+    const { hasRead } = this.state;
+    if (!hasRead) {
+      await this.setState({
+        hasRead: true,
+      }, () => {
+        this.props.registerBarcode(e);
+        this.context.stack.app.dispatch(NavigationActions.back());
+      });
+    }
   }
 
   takePicture = () => {
@@ -37,6 +57,7 @@ export default class Scanner extends Component {
       .then(data => console.log(data))
       .catch(err => console.error(err));
   }
+
   render() {
     return (
       <View style={styles.container}>
