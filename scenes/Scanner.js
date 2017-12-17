@@ -30,7 +30,6 @@ export default class Scanner extends Component {
   }
 
   static propTypes = {
-    navigation: PropTypes.object.isRequired,
     registerBarcode: PropTypes.func.isRequired,
   }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Alert } from 'react-native';
+import { StyleSheet, Text, View, Alert, Image } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import PropTypes from 'prop-types';
 
@@ -28,11 +28,30 @@ export default class Home extends Component {
     stack: PropTypes.object.isRequired,
   }
 
+  state = {
+    isbn: null,
+    imageUri: null,
+  }
+
   registerBarcode = (e) => {
     Alert.alert(
       'Barcode Found!',
       `Type: ${e.type}\nData: ${e.data}`,
     );
+    this.setState({
+      isbn: e.data,
+      imageUri: `http://covers.openlibrary.org/b/isbn/${e.data}-S.jpg`,
+    });
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${e.data}`)
+      .then(res => res.json())
+      .then((json) => {
+        console.log('json', json);
+        const volumeInfo = json.items[0].volumeInfo;
+        this.setState({
+          imageUri: volumeInfo.imageLinks.thumbnail,
+        });
+      });
+    console.log(`http://covers.openlibrary.org/b/isbn/${e.data}-S.jpg`);
   }
 
   showCamera = () => {
@@ -45,8 +64,13 @@ export default class Home extends Component {
   }
 
   render() {
+    const { imageUri } = this.state;
     return (
       <View style={styles.container}>
+        {imageUri && <Image
+          source={{ uri: imageUri }}
+          style={{ width: 100, height: 100, resizeMode: 'contain' }}
+        />}
         <Text style={styles.capture} onPress={this.showCamera}>[Camera]</Text>
       </View>
     );
